@@ -98,12 +98,12 @@ button:hover{
 
     <div class="form-group">
         <label>Usuario</label>
-        <input type="text" placeholder="Ingrese usuario">
+        <input type="text" id="user" placeholder="Ingrese usuario">
     </div>
 
     <div class="form-group">
         <label>Contraseña</label>
-        <input type="password" placeholder="Ingrese contraseña">
+        <input type="password" id="pass" placeholder="Ingrese contraseña">
     </div>
 
     <button type="button" onclick="login()">
@@ -111,7 +111,7 @@ button:hover{
     </button>
 
     <div class="footer">
-        Sistema de Inventario
+        𝘚𝘪𝘴𝘵𝘦𝘮𝘢𝘴 𝘺 𝘚𝘰𝘱𝘰𝘳𝘵𝘦 𝘛é𝘤𝘯𝘪𝘤𝘰®
     </div>
 
 </div>
@@ -120,8 +120,15 @@ button:hover{
 
 function login(){
 
-    // Redirección al formulario dentro de la misma carpeta
-    window.location.href = "./Formulario.html";
+    let user = document.getElementById("user").value;
+    let pass = document.getElementById("pass").value;
+
+    if(user === "admin" && pass === "1234"){
+        window.location.href = "./PanelAdministrador.html";
+    }
+    else{
+        window.location.href = "./PanelUsuario.html";
+    }
 
 }
 
