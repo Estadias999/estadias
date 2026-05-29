@@ -3,182 +3,318 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Control de Inventario</title>
+
+<title>Formulario - Solicitud de Equipos</title>
 
 <style>
-  body{
-    font-family: Arial, sans-serif;
-    background: #fff;
-  }
 
-  .formulario{
-    width: 900px;
-    margin: 0 auto;
-  }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
 
-  .encabezado{
-    text-align: center;
-    margin-bottom: 20px;
-  }
+body{
+    background:#f1f5f9;
+    padding:40px;
+}
 
-  h4{
-    margin-top: 20px;
-  }
+/* CONTENEDOR */
+.container{
+    max-width:1000px;
+    margin:auto;
+    background:#fff;
+    padding:40px;
+    border-radius:10px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.1);
+    position:relative;
+}
 
-  .tabla{
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
+/* BOTÓN VOLVER */
+.back-btn{
+    position:absolute;
+    top:20px;
+    left:20px;
+    background:#1e293b;
+    color:white;
+    border:none;
+    padding:10px 14px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:14px;
+}
 
-  .tabla td, .tabla th{
-    border: 1px solid #000;
-    padding: 6px;
-    vertical-align: middle;
-  }
+.back-btn:hover{
+    background:#0f172a;
+}
 
-  .tabla input, .tabla select{
-    width: 100%;
-    border: none;
-    outline: none;
-    font-size: 14px;
-  }
+/* TÍTULO */
+.title{
+    text-align:center;
+    margin-bottom:30px;
+}
 
-  .titulo{
-    background: #f2f2f2;
-    font-weight: bold;
-    text-align: left;
-    padding: 6px;
-  }
+.title h1{
+    font-size:30px;
+    color:#1e293b;
+}
+
+/* SECCIONES */
+.section{
+    margin-bottom:30px;
+}
+
+.section-title{
+    background:#1e293b;
+    color:white;
+    padding:12px;
+    border-radius:6px;
+    margin-bottom:15px;
+}
+
+/* GRID */
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+label{
+    font-size:14px;
+    font-weight:bold;
+    margin-bottom:8px;
+    color:#334155;
+}
+
+input, select{
+    padding:12px;
+    border:1px solid #cbd5e1;
+    border-radius:6px;
+}
+
+/* SWITCHES */
+.switch-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#f8fafc;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:10px;
+}
+
+.switch{
+    position:relative;
+    width:45px;
+    height:24px;
+}
+
+.switch input{
+    opacity:0;
+}
+
+.slider{
+    position:absolute;
+    cursor:pointer;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background:#cbd5e1;
+    border-radius:30px;
+    transition:.3s;
+}
+
+.slider:before{
+    content:"";
+    position:absolute;
+    height:18px;
+    width:18px;
+    left:3px;
+    bottom:3px;
+    background:white;
+    border-radius:50%;
+    transition:.3s;
+}
+
+.switch input:checked + .slider{
+    background:#1e293b;
+}
+
+.switch input:checked + .slider:before{
+    transform:translateX(20px);
+}
+
+/* OTROS */
+#otrosContainer{
+    display:none;
+    margin-top:10px;
+}
+
+#otrosContainer input{
+    width:100%;
+    padding:12px;
+    border:1px solid #cbd5e1;
+    border-radius:6px;
+}
+
+/* BOTONES */
+.btn{
+    width:100%;
+    padding:14px;
+    background:#1e293b;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:15px;
+    margin-top:20px;
+}
+
+.btn:hover{
+    background:#0f172a;
+}
 
 </style>
+
 </head>
 
 <body>
 
-<form class="formulario">
+<div class="container">
 
-  <div class="encabezado">
-    <h1>Formato de solicitud de equipo de cómputo</h1>
-  </div>
+    <!-- BOTÓN VOLVER -->
+    <button class="back-btn" onclick="volverLogin()">
+        ← Volver
+    </button>
 
-  <h4>Datos del responsable</h4>
+    <!-- TÍTULO -->
+    <div class="title">
+        <h1>Solicitud de Equipos de Cómputo</h1>
+    </div>
 
-  <table class="tabla">
-    <tr>
-      <td>Tipo de responsiva</td>
-      <td><input type="text"></td>
-    </tr>
-    <tr>
-      <td>Responsable</td>
-      <td><input type="text"></td>
-    </tr>
-    <tr>
-      <td>Entrega de equipo a</td>
-      <td><input type="text"></td>
-    </tr>
-    <tr>
-      <td>Área</td>
-      <td><input type="text"></td>
-    </tr>
-    <tr>
-      <td>Tipo de solicitud</td>
-      <td>
-        <select>
-          <option>Asignación</option>
-          <option>Préstamo temporal</option>
-        </select>
-      </td>
-    </tr>
-  </table>
+    <!-- DATOS -->
+    <div class="section">
 
-  <h4>Datos del equipo</h4>
+        <div class="section-title">Datos Generales</div>
 
-  <table class="tabla">
-    <tr>
-      <td>Equipo</td>
-      <td>
-        <select>
-          <option>Laptop</option>
-          <option>Cargador de laptob</option>
-          <option>Celular</option>
-          <option>Cargador de Celular</option>
-          <option>Mouse</option>
-          <option>Monitor</option>
-          <option>Teclado</option>
-          <option>Gabinete</option>
-          <option>Audifonos</option>
-        </select>
-      </td>
-    </tr>
+        <div class="form-grid">
 
-    <tr>
-      <td>Cantidad de equipos</td>
-      <td><input type="number"></td>
-    </tr>
+            <div class="form-group">
+                <label>Responsable</label>
+                <input type="text">
+            </div>
 
-    <tr>
-      <td>Otros</td>
-      <td><input type="text"></td>
-    </tr>
-  </table>
+            <div class="form-group">
+                <label>Nombre de quien entrega equipos</label>
+                <input type="text">
+            </div>
 
-  <h4>Detalle del equipo</h4>
+            <div class="form-group">
+                <label>Área</label>
+                <select>
+                    <option>Seleccionar</option>
+                </select>
+            </div>
 
-  <table class="tabla">
-    <tr>
-      <td>Folio</td>
-      <td><input type="text"></td>
-    </tr>
+            <div class="form-group">
+                <label>Tipo de Solicitud</label>
+                <select>
+                    <option>Asignación</option>
+                    <option>Préstamo Temporal</option>
+                    <option>Retiro de Equipo</option>
+                </select>
+            </div>
 
-    <tr>
-      <td>Modelo</td>
-      <td><input type="text"></td>
-    </tr>
+        </div>
 
-    <tr>
-      <td>Número de serie</td>
-      <td><input type="text"></td>
-    </tr>
-  </table>
+    </div>
 
-  <h4>Datos del usuario</h4>
+    <!-- EQUIPOS -->
+    <div class="section">
 
-  <table class="tabla">
-    <tr>
-      <td>Usuario asignado</td>
-      <td><input type="text"></td>
-    </tr>
+        <div class="section-title">Equipos</div>
 
-    <tr>
-      <td>Línea telefónica</td>
-      <td><input type="text"></td>
-    </tr>
+        <div class="switch-item">
+            <span>Laptop</span>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+            </label>
+        </div>
 
-    <tr>
-      <td>Modelo</td>
-      <td><input type="text"></td>
-    </tr>
+        <div class="switch-item">
+            <span>Monitor</span>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+            </label>
+        </div>
 
-    <tr>
-      <td>Dirección física</td>
-      <td><input type="text"></td>
-    </tr>
+        <div class="switch-item">
+            <span>Teclado</span>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+            </label>
+        </div>
 
-    <tr>
-      <td>Hostname</td>
-      <td><input type="text"></td>
-    </tr>
+    </div>
 
-    <tr>
-      <td>Soporte remoto</td>
-      <td><input type="text"></td>
-    </tr>
-  </table>
+    <!-- OTROS -->
+    <div class="section">
 
-  <button type="submit">Guardar Solicitud</button>
+        <div class="section-title">Otros</div>
 
-</form>
+        <div class="switch-item">
+            <span>Otros equipos</span>
+            <label class="switch">
+                <input type="checkbox" id="otrosSwitch" onclick="toggleOtros()">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div id="otrosContainer">
+            <input type="text" placeholder="Especificar equipo...">
+        </div>
+
+    </div>
+
+    <!-- BOTÓN -->
+    <button class="btn" onclick="generarSolicitud()">
+        Generar Solicitud
+    </button>
+
+</div>
+
+<script>
+
+// VOLVER AL LOGIN
+function volverLogin(){
+    window.location.href = "./login.html";
+}
+
+// MOSTRAR OTROS
+function toggleOtros(){
+
+    let check = document.getElementById("otrosSwitch");
+    let contenedor = document.getElementById("otrosContainer");
+
+    contenedor.style.display = check.checked ? "block" : "none";
+}
+
+// GENERAR SOLICITUD
+function generarSolicitud(){
+    alert("Solicitud generada correctamente");
+}
+
+</script>
 
 </body>
 </html>

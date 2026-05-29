@@ -1,18 +1,131 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-     <h4>Datos Del responsable</h4>
-    <script type="text/javascript" crs="jspdf.min.js"></script>
-    <script type="text/javascript">
-function genPDF (){
-        var doc=new jspdf();
-        doc.text(20,20,'este es un texto')
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Login - Inventario</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
-    </script>
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f1f5f9;
+}
+
+.container{
+    width:380px;
+    background:#ffffff;
+    padding:40px;
+    border-radius:10px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    font-size:28px;
+    margin-bottom:30px;
+    color:#1e293b;
+}
+
+.form-group{
+    margin-bottom:20px;
+}
+
+label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:bold;
+    font-size:14px;
+    color:#334155;
+}
+
+input{
+    width:100%;
+    padding:13px;
+    border:1px solid #cbd5e1;
+    border-radius:6px;
+    font-size:14px;
+}
+
+input:focus{
+    outline:none;
+    border-color:#1e293b;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    background:#1e293b;
+    color:white;
+    border:none;
+    border-radius:6px;
+    font-size:15px;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+button:hover{
+    background:#0f172a;
+}
+
+.footer{
+    text-align:center;
+    margin-top:15px;
+    font-size:12px;
+    color:#94a3b8;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Solicitud de Equipos</h1>
+
+    <div class="form-group">
+        <label>Usuario</label>
+        <input type="text" placeholder="Ingrese usuario">
+    </div>
+
+    <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" placeholder="Ingrese contraseña">
+    </div>
+
+    <button type="button" onclick="login()">
+        Iniciar Sesión
+    </button>
+
+    <div class="footer">
+        Sistema de Inventario
+    </div>
+
+</div>
+
+<script>
+
+function login(){
+
+    // Redirección al formulario dentro de la misma carpeta
+    window.location.href = "./Formulario.html";
+
+}
+
+</script>
+
 </body>
 </html>
