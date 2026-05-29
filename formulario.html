@@ -206,23 +206,38 @@ input, select{
 
         <div class="form-grid">
 
-            <div class="form-group">
+         <div class="form-group">
                 <label>Responsable</label>
                 <input type="text">
-            </div>
+         </div>
 
-            <div class="form-group">
-                <label>Nombre de quien entrega equipos</label>
-                <input type="text">
+        <div class="form-group">
+            <label>Nombre de quien entrega equipos</label>                <input type="text">
             </div>
+           <div class="form-group">
+         <label>Área</label>
+          <select id="areaSelect">
+              <option value="">Seleccionar área</option>
+            </select>
+            <input type="text" id="nuevaArea" placeholder="Nueva área"
+           style="margin-top:10px;padding:10px;border:1px solid #cbd5e1;border-radius:6px;">
 
-            <div class="form-group">
-                <label>Área</label>
-                <select>
-                    <option>Seleccionar</option>
-                </select>
-            </div>
+         <div style="margin-top:10px; display:flex; gap:10px;">
 
+          <button type="button" onclick="agregarArea()"
+         style="padding:8px 12px    ;background:#1e293b;color:white;border:none;border-radius:6px;">
+              Agregar
+  </button>
+
+        <button type="button" onclick="eliminarArea()"
+            style="padding:8px 12px;background:#dc2626;color:white;border:none;border-radius:6px;">
+            Eliminar
+        </button>
+
+        
+
+    </div>
+</div>
             <div class="form-group">
                 <label>Tipo de Solicitud</label>
                 <select>
@@ -295,7 +310,52 @@ input, select{
 
 <script>
 
-// VOLVER AL LOGIN
+let areas = JSON.parse(localStorage.getItem("areas")) || [];
+
+function renderAreas(){
+
+    let select = document.getElementById("areaSelect");
+
+    select.innerHTML = '<option value="">Seleccionar área</option>';
+
+    areas.forEach((area, index) => {
+        select.innerHTML += `<option value="${index}">${area}</option>`;
+    });
+
+    localStorage.setItem("areas", JSON.stringify(areas));
+}
+
+function agregarArea(){
+
+    let input = document.getElementById("nuevaArea");
+    let valor = input.value.trim();
+
+    if(valor === ""){
+        alert("Escribe un nombre de área");
+        return;
+    }
+
+    areas.push(valor);
+    input.value = "";
+    renderAreas();
+}
+
+function eliminarArea(){
+
+    let select = document.getElementById("areaSelect");
+    let index = select.value;
+
+    if(index === ""){
+        alert("Selecciona un área para eliminar");
+        return;
+    }
+
+    areas.splice(index, 1);
+    renderAreas();
+}
+
+renderAreas();
+
 function volverLogin(){
     window.location.href = "./login.html";
 }
