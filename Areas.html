@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestión de Áreas</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f1f5f9;
+    padding:30px;
+}
+
+/* CONTENEDOR */
+.container{
+    max-width:1100px;
+    margin:auto;
+}
+
+/* HEADER */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.header h1{
+    color:#0f172a;
+}
+
+/* BUSCADOR */
+.search{
+    padding:10px;
+    width:250px;
+    border:1px solid #cbd5e1;
+    border-radius:8px;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
+    gap:20px;
+}
+
+/* CARD */
+.card{
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+    transition:.2s;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+}
+
+/* TITULO */
+.area-name{
+    font-size:18px;
+    font-weight:bold;
+    color:#1e293b;
+}
+
+/* SUBTEXTO */
+.subtitle{
+    font-size:13px;
+    color:#64748b;
+    margin-top:5px;
+}
+
+/* BOTONES */
+.actions{
+    display:flex;
+    gap:8px;
+    margin-top:15px;
+}
+
+.btn{
+    flex:1;
+    padding:8px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:12px;
+    color:white;
+}
+
+.view{ background:#2563eb; }
+.edit{ background:#f59e0b; }
+.delete{ background:#dc2626; }
+
+/* AGREGAR */
+.add-area{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.add-area input{
+    flex:1;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #cbd5e1;
+}
+
+.add-area button{
+    padding:10px 15px;
+    background:#0f172a;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>Gestión de Áreas</h1>
+
+        <input
+            type="text"
+            class="search"
+            id="buscar"
+            placeholder="Buscar área..."
+        >
+    </div>
+
+    <!-- AGREGAR -->
+    <div class="add-area">
+        <input type="text" id="nuevaArea" placeholder="Nueva área...">
+        <button onclick="agregarArea()">Agregar</button>
+    </div>
+
+    <!-- GRID -->
+    <div class="grid" id="gridAreas"></div>
+
+</div>
+
+<script>
+
+let areas = JSON.parse(localStorage.getItem("areas")) || [];
+
+function guardar(){
+    localStorage.setItem("areas", JSON.stringify(areas));
+}
+
+function render(){
+
+    let grid = document.getElementById("gridAreas");
+    grid.innerHTML = "";
+
+    areas.forEach((a,i)=>{
+
+        grid.innerHTML += `
+        <div class="card">
+
+            <div class="area-name">${a}</div>
+            <div class="subtitle">Área del sistema</div>
+
+            <div class="actions">
+
+                <button class="btn view"
+                onclick="ver('${a}')">
+                    Ver
+                </button>
+
+                <button class="btn edit"
+                onclick="editar(${i})">
+                    Editar
+                </button>
+
+                <button class="btn delete"
+                onclick="eliminar(${i})">
+                    Eliminar
+                </button>
+
+            </div>
+
+        </div>
+        `;
+    });
+
+    guardar();
+}
+
+function agregarArea(){
+
+    let input = document.getElementById("nuevaArea");
+
+    if(input.value.trim() === ""){
+        alert("Escribe un área");
+        return;
+    }
+
+    areas.push(input.value);
+    input.value = "";
+    render();
+}
+
+function editar(i){
+
+    let nuevo = prompt("Editar área:", areas[i]);
+
+    if(nuevo){
+        areas[i] = nuevo;
+        render();
+    }
+}
+
+function eliminar(i){
+
+    if(confirm("¿Eliminar área?")){
+        areas.splice(i,1);
+        render();
+    }
+}
+
+function ver(area){
+    window.location.href =
+    "area-detalle.html?area=" + encodeURIComponent(area);
+}
+
+/* BUSCADOR */
+document.getElementById("buscar")
+.addEventListener("input", function(){
+
+    let txt = this.value.toLowerCase();
+
+    let cards = document.querySelectorAll(".card");
+
+    cards.forEach(c=>{
+
+        let name = c.querySelector(".area-name")
+        .textContent.toLowerCase();
+
+        c.style.display =
+        name.includes(txt) ? "block" : "none";
+
+    });
+
+});
+
+render();
+
+</script>
+
+</body>
+</html>
