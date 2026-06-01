@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Formulario - Solicitud de Equipos</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f1f5f9;
+    padding:40px;
+}
+
+/* CONTENEDOR */
+.container{
+    max-width:1000px;
+    margin:auto;
+    background:#fff;
+    padding:40px;
+    border-radius:10px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.1);
+    position:relative;
+}
+
+/* BOTÓN VOLVER */
+.back-btn{
+    position:absolute;
+    top:20px;
+    left:20px;
+    background:#1e293b;
+    color:white;
+    border:none;
+    padding:10px 14px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.back-btn:hover{
+    background:#0f172a;
+}
+
+/* TÍTULO */
+.title{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.title h1{
+    font-size:30px;
+    color:#1e293b;
+}
+
+/* SECCIONES */
+.section{
+    margin-bottom:30px;
+}
+
+.section-title{
+    background:#1e293b;
+    color:white;
+    padding:12px;
+    border-radius:6px;
+    margin-bottom:15px;
+}
+
+/* GRID */
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+label{
+    font-size:14px;
+    font-weight:bold;
+    margin-bottom:8px;
+    color:#334155;
+}
+
+input, select{
+    padding:12px;
+    border:1px solid #cbd5e1;
+    border-radius:6px;
+}
+
+/* SWITCHES */
+.switch-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#f8fafc;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:10px;
+}
+
+.switch{
+    position:relative;
+    width:45px;
+    height:24px;
+}
+
+.switch input{
+    opacity:0;
+}
+
+.slider{
+    position:absolute;
+    cursor:pointer;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background:#cbd5e1;
+    border-radius:30px;
+    transition:.3s;
+}
+
+.slider:before{
+    content:"";
+    position:absolute;
+    height:18px;
+    width:18px;
+    left:3px;
+    bottom:3px;
+    background:white;
+    border-radius:50%;
+    transition:.3s;
+}
+
+.switch input:checked + .slider{
+    background:#1e293b;
+}
+
+.switch input:checked + .slider:before{
+    transform:translateX(20px);
+}
+
+.btn{
+    width:100%;
+    padding:14px;
+    background:#1e293b;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:15px;
+    margin-top:20px;
+}
+
+.btn:hover{
+    background:#0f172a;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+    <button class="back-btn" onclick="volverLogin()">
+        ← Volver
+    </button>
+
+    <div class="title">
+        <h1>Solicitud de Equipos de Cómputo</h1>
+    </div>
+
+    <div class="section">
+
+        <div class="section-title">
+            Datos Generales
+        </div>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Responsable</label>
+                <input type="text" id="responsable">
+            </div>
+
+            <div class="form-group">
+                <label>Nombre de quien entrega equipos</label>
+                <input type="text" id="entrega">
+            </div>
+
+            <div class="form-group">
+
+                <label>Área</label>
+
+                <select id="areaSelect">
+                    <option value="">
+                        Seleccionar área
+                    </option>
+                </select>
+
+                <input
+                    type="text"
+                    id="nuevaArea"
+                    placeholder="Nueva área"
+                    style="margin-top:10px;"
+                >
+
+                <div style="margin-top:10px;display:flex;gap:10px;">
+
+                    <button
+                        type="button"
+                        onclick="agregarArea()"
+                        style="padding:8px 12px;background:#1e293b;color:white;border:none;border-radius:6px;"
+                    >
+                        Agregar
+                    </button>
+
+                    <button
+                        type="button"
+                        onclick="eliminarArea()"
+                        style="padding:8px 12px;background:#dc2626;color:white;border:none;border-radius:6px;"
+                    >
+                        Eliminar
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label>Tipo de Solicitud</label>
+
+                <select id="tipoSolicitud">
+                    <option>Asignación</option>
+                    <option>Préstamo Temporal</option>
+                    <option>Retiro de Equipo</option>
+                </select>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="section">
+
+        <div class="section-title">
+            Equipos
+        </div>
+
+        <div class="switch-item">
+            <span>Laptop</span>
+            <label class="switch">
+                <input type="checkbox" id="laptop">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="switch-item">
+            <span>Monitor</span>
+            <label class="switch">
+                <input type="checkbox" id="monitor">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="switch-item">
+            <span>Cargador Laptop</span>
+            <label class="switch">
+                <input type="checkbox" id="cargadorLaptop">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="switch-item">
+            <span>Teclado</span>
+            <label class="switch">
+                <input type="checkbox" id="teclado">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="switch-item">
+            <span>Celular</span>
+            <label class="switch">
+                <input type="checkbox" id="celular">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="switch-item">
+            <span>Gabinete</span>
+            <label class="switch">
+                <input type="checkbox" id="gabinete">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="switch-item">
+            <span>Cargador Celular</span>
+            <label class="switch">
+                <input type="checkbox" id="cargadorCelular">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="switch-item">
+            <span>Audífonos</span>
+            <label class="switch">
+                <input type="checkbox" id="audifonos">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="switch-item">
+            <span>Mouse</span>
+            <label class="switch">
+                <input type="checkbox" id="mouse">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="switch-item">
+            <span>USB</span>
+            <label class="switch">
+                <input type="checkbox" id="usb">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <label style="margin-top:20px;">
+            Otros equipos
+        </label>
+
+        <input
+            type="text"
+            id="otrosEquipos"
+            placeholder="Especificar..."
+        >
+
+    </div>
+
+    <button class="btn" onclick="generarSolicitud()">
+        Generar Solicitud
+    </button>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+
+let areas = JSON.parse(localStorage.getItem("areas")) || [];
+
+function renderAreas(){
+
+    let select = document.getElementById("areaSelect");
+
+    select.innerHTML =
+        '<option value="">Seleccionar área</option>';
+
+    areas.forEach((area,index)=>{
+        select.innerHTML += `
+            <option value="${index}">
+                ${area}
+            </option>
+        `;
+    });
+
+    localStorage.setItem(
+        "areas",
+        JSON.stringify(areas)
+    );
+}
+
+function agregarArea(){
+
+    let input = document.getElementById("nuevaArea");
+    let valor = input.value.trim();
+
+    if(valor === ""){
+        alert("Escribe un área");
+        return;
+    }
+
+    areas.push(valor);
+
+    input.value = "";
+
+    renderAreas();
+}
+
+function eliminarArea(){
+
+    let select = document.getElementById("areaSelect");
+    let index = select.value;
+
+    if(index === ""){
+        alert("Selecciona un área");
+        return;
+    }
+
+    areas.splice(index,1);
+
+    renderAreas();
+}
+
+function generarPDF(solicitud){
+
+    let equiposSeleccionados = [];
+
+    Object.keys(solicitud.equipos).forEach(equipo => {
+
+        if(solicitud.equipos[equipo]){
+            equiposSeleccionados.push(equipo);
+        }
+
+    });
+
+    const contenido = document.createElement("div");
+
+    contenido.innerHTML = `
+        <div style="padding:30px;font-family:Arial;">
+
+            <h1 style="text-align:center;color:#1e293b;">
+                Solicitud de Equipos de Cómputo
+            </h1>
+
+            <hr style="margin:20px 0;">
+
+            <h3>Datos Generales</h3>
+
+            <p><strong>Responsable:</strong> ${solicitud.responsable}</p>
+
+            <p><strong>Nombre de quien entrega:</strong> ${solicitud.entrega}</p>
+
+            <p><strong>Área:</strong> ${solicitud.area}</p>
+
+            <p><strong>Tipo de Solicitud:</strong> ${solicitud.tipoSolicitud}</p>
+
+            <h3 style="margin-top:20px;">
+                Equipos Solicitados
+            </h3>
+
+            <ul>
+                ${
+                    equiposSeleccionados.length
+                    ? equiposSeleccionados.map(e => `<li>${e}</li>`).join("")
+                    : "<li>Ninguno</li>"
+                }
+            </ul>
+
+            <p>
+                <strong>Otros equipos:</strong>
+                ${solicitud.otrosEquipos || "Ninguno"}
+            </p>
+
+            <p>
+                <strong>Fecha:</strong>
+                ${solicitud.fecha}
+            </p>
+
+            <br><br><br>
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                margin-top:80px;
+            ">
+                <div>
+                    ______________________
+                    <br>
+                    Responsable
+                </div>
+
+                <div>
+                    ______________________
+                    <br>
+                    Entrega
+                </div>
+            </div>
+
+        </div>
+    `;
+
+    html2pdf()
+        .set({
+            margin:10,
+            filename:`Solicitud_${Date.now()}.pdf`,
+            image:{
+                type:'jpeg',
+                quality:1
+            },
+            html2canvas:{
+                scale:2
+            },
+            jsPDF:{
+                unit:'mm',
+                format:'a4',
+                orientation:'portrait'
+            }
+        })
+        .from(contenido)
+        .save()
+        .then(() => {
+
+            const ventana = window.open("", "_blank");
+
+            ventana.document.write(`
+                <html>
+                <head>
+                    <title>Solicitud</title>
+                </head>
+                <body>
+                    ${contenido.innerHTML}
+                </body>
+                </html>
+            `);
+
+            ventana.document.close();
+
+            setTimeout(() => {
+                ventana.print();
+            }, 500);
+
+        });
+}
+
+function generarSolicitud(){
+
+    const solicitud = {
+
+        responsable:
+            document.getElementById("responsable").value,
+
+        entrega:
+            document.getElementById("entrega").value,
+
+        area:
+            document.getElementById("areaSelect").selectedOptions[0].text,
+
+        tipoSolicitud:
+            document.getElementById("tipoSolicitud").value,
+
+        equipos:{
+            laptop:document.getElementById("laptop").checked,
+            monitor:document.getElementById("monitor").checked,
+            cargadorLaptop:document.getElementById("cargadorLaptop").checked,
+            teclado:document.getElementById("teclado").checked,
+            celular:document.getElementById("celular").checked,
+            gabinete:document.getElementById("gabinete").checked,
+            cargadorCelular:document.getElementById("cargadorCelular").checked,
+            audifonos:document.getElementById("audifonos").checked,
+            mouse:document.getElementById("mouse").checked,
+            usb:document.getElementById("usb").checked
+        },
+
+        otrosEquipos:
+            document.getElementById("otrosEquipos").value,
+
+        fecha:
+            new Date().toLocaleString()
+    };
+
+    let solicitudes =
+        JSON.parse(localStorage.getItem("solicitudes")) || [];
+
+    solicitudes.push(solicitud);
+
+    localStorage.setItem(
+        "solicitudes",
+        JSON.stringify(solicitudes)
+    );
+
+    generarPDF(solicitud);
+
+    alert("Solicitud guardada correctamente");
+
+    document.querySelectorAll("input[type='text']")
+        .forEach(input => input.value = "");
+
+    document.querySelectorAll("input[type='checkbox']")
+        .forEach(check => check.checked = false);
+}
+
+function volverLogin(){
+    window.location.href = "./login.html";
+}
+
+renderAreas();
+
+</script>
+</body>
+</html>

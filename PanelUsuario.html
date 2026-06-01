@@ -83,32 +83,32 @@ button:hover{
     <h1>Bienvenido de nuevo</h1>
     <p>Bienvenido a tu panel. ¿Qué deseas realizar?</p>
 
-    <button onclick="irSolicitudes()">
+    <button onclick="irInventario()">
         Inventario
     </button>
 
-    <button onclick="irCrear()">
+    <button onclick="irSolicitud()">
+        Solicitud
+    </button>
+
+    <button onclick="irHistorialSolicitudes()">
         Solicitudes
-    </button>
-
-    <button onclick="irCrear()">
-        Inventario
     </button>
 
 </div>
 
 <script>
 
-function irSolicitudes(){
-    window.location.href = "solicitudes.html";
-}
-
-function irCrear(){
-    window.location.href = "formulario.html";
-}
-
 function irInventario(){
-    window.location.href = "inventario.html";
+    window.location.href = "Inventario.html";
+}
+
+function irSolicitud(){
+    window.location.href = "Soli.html";
+}
+
+function irHistorialSolicitudes(){
+    window.location.href = "HIstorialSolicitudes.html";
 }
 
 </script>
