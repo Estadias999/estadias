@@ -1,0 +1,117 @@
+<!-- area-detalle.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Detalle Área</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f5f5f5;
+    padding:30px;
+}
+
+.card{
+    width:350px;
+    margin:auto;
+    background:white;
+    border-radius:8px;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+    padding:20px;
+}
+
+.line{
+    height:1px;
+    background:#ddd;
+    margin:15px 0;
+}
+
+.item{
+    display:grid;
+    grid-template-columns:25px 1fr auto auto;
+    gap:15px;
+    padding:10px 0;
+    align-items:center;
+}
+
+.user{
+    color:#777;
+    font-size:12px;
+}
+
+.action{
+    color:#666;
+    cursor:pointer;
+    text-decoration:none;
+}
+
+.action:hover{
+    color:black;
+}
+
+.back{
+    display:inline-block;
+    margin-bottom:15px;
+    text-decoration:none;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+
+    <a href="areas.html" class="back">← Regresar</a>
+
+    <h3 id="areaNombre">Área</h3>
+
+    <div class="line"></div>
+
+    <div class="item">
+        ⭐
+        <div>
+            <div>Asignación</div>
+            <span class="user">Juan Pérez</span>
+        </div>
+        <a href="#" class="action">VER</a>
+        <a href="#" class="action">PDF</a>
+    </div>
+
+    <div class="item">
+        ⭐
+        <div>
+            <div>PT</div>
+            <span class="user">Mario López</span>
+        </div>
+        <a href="#" class="action">VER</a>
+        <a href="#" class="action">PDF</a>
+    </div>
+
+    <div class="item">
+        ⭐
+        <div>
+            <div>BAJA</div>
+            <span class="user">María García</span>
+        </div>
+        <a href="#" class="action">VER</a>
+        <a href="#" class="action">PDF</a>
+    </div>
+
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const id = params.get('id');
+
+const areas = {
+    1: 'Recursos Humanos',
+    2: 'Tecnología',
+    3: 'Finanzas'
+};
+
+document.getElementById('areaNombre').textContent =
+    areas[id] || 'Área';
+</script>
+
+</body>
+</html>
