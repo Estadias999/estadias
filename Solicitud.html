@@ -361,16 +361,15 @@ input, select{
 
 <script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
 let areas = JSON.parse(localStorage.getItem("areas")) || [];
 
 function renderAreas(){
-
     let select = document.getElementById("areaSelect");
+    select.innerHTML = '<option value="">Seleccionar área</option>';
 
-    select.innerHTML =
-        '<option value="">Seleccionar área</option>';
-
-    areas.forEach((area,index)=>{
+    areas.forEach((area, index) => {
         select.innerHTML += `
             <option value="${index}">
                 ${area}
@@ -378,14 +377,10 @@ function renderAreas(){
         `;
     });
 
-    localStorage.setItem(
-        "areas",
-        JSON.stringify(areas)
-    );
+    localStorage.setItem("areas", JSON.stringify(areas));
 }
 
 function agregarArea(){
-
     let input = document.getElementById("nuevaArea");
     let valor = input.value.trim();
 
@@ -395,14 +390,11 @@ function agregarArea(){
     }
 
     areas.push(valor);
-
     input.value = "";
-
     renderAreas();
 }
 
 function eliminarArea(){
-
     let select = document.getElementById("areaSelect");
     let index = select.value;
 
@@ -411,187 +403,227 @@ function eliminarArea(){
         return;
     }
 
-    areas.splice(index,1);
-
+    areas.splice(index, 1);
     renderAreas();
 }
 
 function generarPDF(solicitud){
-
-    let equiposSeleccionados = [];
-
-    Object.keys(solicitud.equipos).forEach(equipo => {
-
-        if(solicitud.equipos[equipo]){
-            equiposSeleccionados.push(equipo);
-        }
-
-    });
-
+    // Creamos un contenedor temporal con el diseño exacto que me pasaste
     const contenido = document.createElement("div");
+    
+    // Evaluamos el tipo de solicitud para marcarlo con una [X]
+    const esAsignacion = solicitud.tipoSolicitud.toLowerCase().includes("asignación") || solicitud.tipoSolicitud.toLowerCase().includes("asignacion") ? "[X] Asignación" : "[ ] Asignación";
+    const esPrestamo = solicitud.tipoSolicitud.toLowerCase().includes("préstamo") || solicitud.tipoSolicitud.toLowerCase().includes("prestamo") ? "[X] Préstamo temporal" : "[ ] Préstamo temporal";
 
     contenido.innerHTML = `
-        <div style="padding:30px;font-family:Arial;">
+        <div style="font-family: Arial, Helvetica, sans-serif; background:#fff; padding:20px;">
+            <div style="width:100%; max-width:1000px; margin:auto;">
+                
+                <div style="text-align:center; font-weight:bold; font-size:16px; margin-bottom:10px;">
+                    Formato de solicitud de equipo de cómputo
+                </div>
+                
+                <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:10px;">
+                    <div>
+                        <b>Empresa:</b> Alivio Seguro S.A de C.V<br>
+                        <b>Área:</b> Sistemas y Soporte Técnico<br>
+                        <b>Encargado:</b> Salvador Humberto Cruz V<br>
+                        <b>V3.0 Última Modificación 11 de diciembre del 2024</b>
+                    </div>
+                    <div style="text-align:right;">
+                        Av. Pdte. Adolfo López Mateo 57,<br>
+                        México Nuevo, CP:52966 CD, López Mateo Mex
+                    </div>
+                </div>
+                
+                <table style="width:100%; border-collapse:collapse; margin-bottom:10px;">
+                    <tr>
+                        <th colspan="3" style="border:1px solid #000; padding:6px; font-size:12px; text-align:center; font-weight:bold;">Datos del responsable</th>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px;">Tipo de responsiva:</td>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px;">Área: ${solicitud.area}</td>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px;">Fecha: ${solicitud.fecha}</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px;">Responsable:</td>
+                        <td colspan="2" style="border:1px solid #000; padding:6px; font-size:12px;">${solicitud.responsable}</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px;">Nombre de quien entrega equipos:</td>
+                        <td colspan="2" style="border:1px solid #000; padding:6px; font-size:12px;">${solicitud.entrega}</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px;">Tipo de solicitud:</td>
+                        <td colspan="2" style="border:1px solid #000; padding:6px; font-size:12px;">
+                            ${esAsignacion} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${esPrestamo}
+                        </td>
+                    </tr>
+                </table>
+                
+                <table style="width:100%; border-collapse:collapse; margin-bottom:10px;">
+                    <tr>
+                        <th style="border:1px solid #000; padding:6px; font-size:12px;">Equipos</th>
+                        <th style="border:1px solid #000; padding:6px; font-size:12px;">Cantidad</th>
+                        <th style="border:1px solid #000; padding:6px; font-size:12px;">Equipos</th>
+                        <th style="border:1px solid #000; padding:6px; font-size:12px;">Cantidad</th>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px;">Laptop</td>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px; text-align:center;">${solicitud.equipos.laptop ? '1' : ''}</td>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px;">Monitor</td>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px; text-align:center;">${solicitud.equipos.monitor ? '1' : ''}</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px;">Cargador de laptop</td>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px; text-align:center;">${solicitud.equipos.cargadorLaptop ? '1' : ''}</td>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px;">Teclado</td>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px; text-align:center;">${solicitud.equipos.teclado ? '1' : ''}</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px;">Celular</td>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px; text-align:center;">${solicitud.equipos.celular ? '1' : ''}</td>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px;">Gabinete</td>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px; text-align:center;">${solicitud.equipos.gabinete ? '1' : ''}</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px;">Cargador de Celular</td>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px; text-align:center;">${solicitud.equipos.cargadorCelular ? '1' : ''}</td>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px;">Audífonos</td>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px; text-align:center;">${solicitud.equipos.audifonos ? '1' : ''}</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px;">Mouse</td>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px; text-align:center;">${solicitud.equipos.mouse ? '1' : ''}</td>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px;">USB</td>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px; text-align:center;">${solicitud.equipos.usb ? '1' : ''}</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #000; padding:6px; font-size:12px;">Otros:</td>
+                        <td colspan="3" style="border:1px solid #000; padding:6px; font-size:12px;">${solicitud.otrosEquipos || ""}</td>
+                    </tr>
+                </table>
+                
+                <table style="width:100%; border-collapse:collapse; margin-bottom:10px;">
+                    <tr>
+                        <th colspan="3" style="border:1px solid #000; padding:6px; font-size:12px; text-align:center; font-weight:bold;">Datos de Equipo</th>
+                    </tr>
+                    <tr>
+                        <th style="border:1px solid #000; padding:6px; font-size:12px;">Folio</th>
+                        <th style="border:1px solid #000; padding:6px; font-size:12px;">Modelo</th>
+                        <th style="border:1px solid #000; padding:6px; font-size:12px;">Número de serie</th>
+                    </tr>
+                    <tr><td style="border:1px solid #000; padding:12px;"></td><td style="border:1px solid #000; padding:12px;"></td><td style="border:1px solid #000; padding:12px;"></td></tr>
+                    <tr><td style="border:1px solid #000; padding:12px;"></td><td style="border:1px solid #000; padding:12px;"></td><td style="border:1px solid #000; padding:12px;"></td></tr>
+                    <tr><td style="border:1px solid #000; padding:12px;"></td><td style="border:1px solid #000; padding:12px;"></td><td style="border:1px solid #000; padding:12px;"></td></tr>
+                </table>
+                
+                <table style="width:100%; border-collapse:collapse; margin-bottom:10px;">
+                    <tr>
+                        <th colspan="3" style="border:1px solid #000; padding:6px; font-size:12px; text-align:center; font-weight:bold;">Datos de Usuarios</th>
+                    </tr>
+                    <tr>
+                        <th style="border:1px solid #000; padding:6px; font-size:12px;">Usuario Asignación</th>
+                        <th style="border:1px solid #000; padding:6px; font-size:12px;">Línea Telefónica</th>
+                        <th style="border:1px solid #000; padding:6px; font-size:12px;">Modelo</th>
+                    </tr>
+                    <tr><td style="border:1px solid #000; padding:12px;"></td><td style="border:1px solid #000; padding:12px;"></td><td style="border:1px solid #000; padding:12px;"></td></tr>
+                    <tr>
+                        <th style="border:1px solid #000; padding:6px; font-size:12px;">Dirección física</th>
+                        <th style="border:1px solid #000; padding:6px; font-size:12px;">HostName</th>
+                        <th style="border:1px solid #000; padding:6px; font-size:12px;">Soporte Remoto</th>
+                    </tr>
+                    <tr><td style="border:1px solid #000; padding:12px;"></td><td style="border:1px solid #000; padding:12px;"></td><td style="border:1px solid #000; padding:12px;"></td></tr>
+                </table>
 
-            <h1 style="text-align:center;color:#1e293b;">
-                Solicitud de Equipos de Cómputo
-            </h1>
-
-            <hr style="margin:20px 0;">
-
-            <h3>Datos Generales</h3>
-
-            <p><strong>Responsable:</strong> ${solicitud.responsable}</p>
-
-            <p><strong>Nombre de quien entrega:</strong> ${solicitud.entrega}</p>
-
-            <p><strong>Área:</strong> ${solicitud.area}</p>
-
-            <p><strong>Tipo de Solicitud:</strong> ${solicitud.tipoSolicitud}</p>
-
-            <h3 style="margin-top:20px;">
-                Equipos Solicitados
-            </h3>
-
-            <ul>
-                ${
-                    equiposSeleccionados.length
-                    ? equiposSeleccionados.map(e => `<li>${e}</li>`).join("")
-                    : "<li>Ninguno</li>"
-                }
-            </ul>
-
-            <p>
-                <strong>Otros equipos:</strong>
-                ${solicitud.otrosEquipos || "Ninguno"}
-            </p>
-
-            <p>
-                <strong>Fecha:</strong>
-                ${solicitud.fecha}
-            </p>
-
-            <br><br><br>
-
-            <div style="
-                display:flex;
-                justify-content:space-between;
-                margin-top:80px;
-            ">
-                <div>
-                    ______________________
-                    <br>
-                    Responsable
+                <div style="display:flex; justify-content:space-between; margin-top:50px; font-size:12px;">
+                    <div style="text-align:center; width:40%;">
+                        __________________________________<br>
+                        Firma del Responsable<br>
+                        <b>${solicitud.responsable}</b>
+                    </div>
+                    <div style="text-align:center; width:40%;">
+                        __________________________________<br>
+                        Firma de Quien Entrega<br>
+                        <b>${solicitud.entrega}</b>
+                    </div>
                 </div>
 
-                <div>
-                    ______________________
-                    <br>
-                    Entrega
-                </div>
             </div>
-
         </div>
     `;
 
+    // Configuración de html2pdf para que se ajuste perfectamente a una hoja A4
     html2pdf()
         .set({
-            margin:10,
-            filename:`Solicitud_${Date.now()}.pdf`,
-            image:{
-                type:'jpeg',
-                quality:1
-            },
-            html2canvas:{
-                scale:2
-            },
-            jsPDF:{
-                unit:'mm',
-                format:'a4',
-                orientation:'portrait'
-            }
+            margin: 10,
+            filename: `Solicitud_${Date.now()}.pdf`,
+            image: { type: 'jpeg', quality: 1 },
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         })
         .from(contenido)
         .save()
         .then(() => {
-
+            // Abre la ventana de impresión nativa con el nuevo diseño limpio
             const ventana = window.open("", "_blank");
-
             ventana.document.write(`
                 <html>
                 <head>
-                    <title>Solicitud</title>
+                    <title>Imprimir Formato de Solicitud</title>
+                    <style>
+                        body { margin: 0; padding: 0; }
+                        table { width:100%; border-collapse:collapse; margin-bottom:10px; }
+                        td, th { border:1px solid #000; padding:6px; font-size:12px; }
+                    </style>
                 </head>
                 <body>
                     ${contenido.innerHTML}
                 </body>
                 </html>
             `);
-
             ventana.document.close();
-
             setTimeout(() => {
                 ventana.print();
             }, 500);
-
         });
 }
 
 function generarSolicitud(){
-
+    // Extraemos los datos desde tu formulario rápido
     const solicitud = {
-
-        responsable:
-            document.getElementById("responsable").value,
-
-        entrega:
-            document.getElementById("entrega").value,
-
-        area:
-            document.getElementById("areaSelect").selectedOptions[0].text,
-
-        tipoSolicitud:
-            document.getElementById("tipoSolicitud").value,
-
-        equipos:{
-            laptop:document.getElementById("laptop").checked,
-            monitor:document.getElementById("monitor").checked,
-            cargadorLaptop:document.getElementById("cargadorLaptop").checked,
-            teclado:document.getElementById("teclado").checked,
-            celular:document.getElementById("celular").checked,
-            gabinete:document.getElementById("gabinete").checked,
-            cargadorCelular:document.getElementById("cargadorCelular").checked,
-            audifonos:document.getElementById("audifonos").checked,
-            mouse:document.getElementById("mouse").checked,
-            usb:document.getElementById("usb").checked
+        responsable: document.getElementById("responsable").value,
+        entrega: document.getElementById("entrega").value,
+        area: document.getElementById("areaSelect").selectedOptions[0].text,
+        tipoSolicitud: document.getElementById("tipoSolicitud").value,
+        equipos: {
+            laptop: document.getElementById("laptop").checked,
+            monitor: document.getElementById("monitor").checked,
+            cargadorLaptop: document.getElementById("cargadorLaptop").checked,
+            teclado: document.getElementById("teclado").checked,
+            celular: document.getElementById("celular").checked,
+            gabinete: document.getElementById("gabinete").checked,
+            cargadorCelular: document.getElementById("cargadorCelular").checked,
+            audifonos: document.getElementById("audifonos").checked,
+            mouse: document.getElementById("mouse").checked,
+            usb: document.getElementById("usb").checked
         },
-
-        otrosEquipos:
-            document.getElementById("otrosEquipos").value,
-
-        fecha:
-            new Date().toLocaleString()
+        otrosEquipos: document.getElementById("otrosEquipos").value,
+        fecha: new Date().toLocaleDateString('es-MX') // Formato de fecha local más limpio
     };
 
-    let solicitudes =
-        JSON.parse(localStorage.getItem("solicitudes")) || [];
-
+    let solicitudes = JSON.parse(localStorage.getItem("solicitudes")) || [];
     solicitudes.push(solicitud);
+    localStorage.setItem("solicitudes", JSON.stringify(solicitudes));
 
-    localStorage.setItem(
-        "solicitudes",
-        JSON.stringify(solicitudes)
-    );
-
+    // Ejecuta la generación con el nuevo diseño
     generarPDF(solicitud);
 
-    alert("Solicitud guardada correctamente");
+    alert("Solicitud guardada e impresa correctamente");
 
-    document.querySelectorAll("input[type='text']")
-        .forEach(input => input.value = "");
-
-    document.querySelectorAll("input[type='checkbox']")
-        .forEach(check => check.checked = false);
+    // Limpieza de campos del formulario rápido
+    document.querySelectorAll("input[type='text']").forEach(input => input.value = "");
+    document.querySelectorAll("input[type='checkbox']").forEach(check => check.checked = false);
 }
 
 function volverLogin(){
@@ -599,7 +631,7 @@ function volverLogin(){
 }
 
 renderAreas();
-
+</script>
 </script>
 </body>
 </html>
