@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registros del Área</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f1f5f9;
+    padding:30px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.back{
+    text-decoration:none;
+    color:#1e293b;
+    font-weight:bold;
+}
+
+/* CARD */
+.card{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,.08);
+}
+
+/* TITULO */
+.title{
+    font-weight:bold;
+    color:#0f172a;
+}
+
+/* SUB */
+.sub{
+    font-size:13px;
+    color:#64748b;
+}
+
+/* BOTONES */
+.btns{
+    margin-top:10px;
+    display:flex;
+    gap:10px;
+}
+
+.btn{
+    padding:6px 10px;
+    border:none;
+    border-radius:6px;
+    color:white;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.view{ background:#2563eb; }
+.pdf{ background:#dc2626; }
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <a href="areas.html" class="back">← Volver</a>
+        <h2 id="titulo">Registros</h2>
+    </div>
+
+    <div id="lista"></div>
+
+</div>
+
+<script>
+
+const params = new URLSearchParams(window.location.search);
+const area = params.get("area");
+
+document.getElementById("titulo").textContent = area;
+
+let solicitudes =
+JSON.parse(localStorage.getItem("solicitudes")) || [];
+
+let filtradas =
+solicitudes.filter(s => s.area === area);
+
+let lista = document.getElementById("lista");
+
+function render(){
+
+    lista.innerHTML = "";
+
+    if(filtradas.length === 0){
+        lista.innerHTML = "<p>No hay registros en esta área</p>";
+        return;
+    }
+
+    filtradas.forEach((s,i)=>{
+
+        lista.innerHTML += `
+        <div class="card">
+
+            <div class="title">${s.tipo}</div>
+
+            <div class="sub">
+                Responsable: ${s.responsable}
+            </div>
+
+            <div class="sub">
+                Entrega: ${s.entrega}
+            </div>
+
+            <div class="btns">
+
+                <button class="btn view"
+                onclick="ver(${i})">
+                    VER DETALLE
+                </button>
+
+            </div>
+
+        </div>
+        `;
+    });
+
+}
+
+function ver(i){
+
+    let s = filtradas[i];
+
+    alert(
+        "Área: " + s.area +
+        "\nResponsable: " + s.responsable +
+        "\nEntrega: " + s.entrega +
+        "\nTipo: " + s.tipo
+    );
+
+}
+
+render();
+
+</script>
+
+</body>
+</html>
