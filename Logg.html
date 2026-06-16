@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Login </title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #e9e9ff;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.container {
+    width: 1000px;
+    height: 600px;
+    display: flex;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+    background: white;
+}
+
+/* LADO IZQUIERDO */
+.left {
+    width: 50%;
+    background: linear-gradient(135deg, #5b5fc7, #8b7bff);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px;
+    color: white;
+}
+
+/* círculos decorativos */
+.left::before,
+.left::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+}
+
+.left::before {
+    width: 300px;
+    height: 300px;
+    top: -80px;
+    left: -80px;
+}
+
+.left::after {
+    width: 400px;
+    height: 400px;
+    bottom: -150px;
+    right: -150px;
+}
+
+/* logo */
+.logo {
+    font-weight: bold;
+    font-size: 18px;
+    z-index: 2;
+}
+
+/* texto */
+.welcome {
+    z-index: 2;
+}
+
+.welcome h2 {
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.welcome p {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+/* LADO DERECHO */
+.right {
+    width: 50%;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.right h1 {
+    margin-bottom: 30px;
+    font-size: 26px;
+}
+
+/* INPUTS */
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    font-size: 13px;
+    color: #444;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    margin-top: 6px;
+    border: none;
+    border-radius: 25px;
+    background: #f3f4f6;
+    outline: none;
+    padding-left: 18px;
+}
+
+input:focus {
+    box-shadow: 0 0 0 2px #8b7bff;
+}
+
+/* LINKS */
+.links {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin: 10px 0 20px;
+    color: #666;
+}
+
+/* 🔥 BOTÓN LOGIN CON BARRIDO LED */
+.login-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(135deg, #5b5fc7, #8b7bff);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+    box-shadow: 0 10px 20px rgba(91,95,199,0.25);
+}
+
+/* BARRIDO LED */
+.login-btn::before {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.30);
+    top: -50%;
+    left: -120px;
+    transform: rotate(25deg);
+    transition: 0.8s;
+}
+
+.login-btn:hover::before {
+    left: 120%;
+}
+
+/* hover */
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(91,95,199,0.35);
+}
+
+.login-btn:active {
+    transform: scale(0.98);
+}
+
+/* FOOTER */
+.footer {
+    margin-top: 20px;
+    font-size: 11px;
+    color: #777;
+    text-align: center;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- IZQUIERDA -->
+    <div class="left">
+
+        <div class="logo">
+            positive prime
+        </div>
+
+        <div class="welcome">
+            <h2>Hey</h2>
+            <p>Welcome To<br>Positive Prime</p>
+        </div>
+
+    </div>
+
+    <!-- DERECHA -->
+    <div class="right">
+
+        <h1>Login</h1>
+
+        <div class="form-group">
+            <label>Usuario</label>
+            <input type="text" id="user" placeholder="Ingrese usuario">
+        </div>
+
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" id="pass" placeholder="Ingrese contraseña">
+        </div>
+
+        <div class="links">
+            <span>Sign up</span>
+            <span>Forgot Password?</span>
+        </div>
+
+        <button class="login-btn" onclick="login()">
+            LOGIN
+        </button>
+
+        <div class="footer">
+            𝘚𝘪𝘴𝘵𝘦𝘮𝘢𝘴 𝘺 𝘚𝘰𝘱𝘰𝘳𝘵𝘦 𝘛é𝘤𝘯𝘪𝘤𝘰®
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function login(){
+
+    let user = document.getElementById("user").value;
+    let pass = document.getElementById("pass").value;
+
+    if(user === "admin" && pass === "1234"){
+        localStorage.setItem("rol", "admin");
+        window.location.href = "./PanelAdministrador.html";
+    }
+    else{
+        localStorage.setItem("rol", "usuario");
+        window.location.href = "./PanelUsuario.html";
+    }
+}
+
+function registrarUsuario(nombre, correo){
+
+    let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+    usuarios.push({
+        nombre: nombre,
+        correo: correo,
+        fecha: new Date().toLocaleString()
+    });
+
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+}
+
+</script>
+
+</body>
+</html>

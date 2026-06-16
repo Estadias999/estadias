@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Historial de Solicitudes</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, sans-serif;
+}
+
+body{
+    background: linear-gradient(135deg, #e9e9ff, #f5f7ff);
+    padding:40px;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.container{
+    max-width:1200px;
+    margin:auto;
+    background:#fff;
+    padding:40px;
+    border-radius:25px;
+    box-shadow:0 25px 60px rgba(0,0,0,0.15);
+    position:relative;
+}
+
+/* BOTÓN VOLVER */
+.back-btn{
+    position:absolute;
+    top:20px;
+    left:20px;
+    padding:10px 14px;
+    border:none;
+    border-radius:25px;
+    cursor:pointer;
+    color:white;
+    background: linear-gradient(135deg, #5b5fc7, #8b7bff);
+    font-weight:bold;
+    overflow:hidden;
+    position:absolute;
+}
+
+/* TITULO */
+.title{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.title h1{
+    color:#1e1e2f;
+}
+
+/* TABLA */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+    overflow:hidden;
+    border-radius:15px;
+}
+
+/* HEADER */
+th{
+    background: linear-gradient(135deg, #5b5fc7, #8b7bff);
+    color:white;
+    padding:12px;
+    font-size:13px;
+}
+
+/* CELDAS */
+td{
+    border-bottom:1px solid #eee;
+    padding:12px;
+    font-size:13px;
+    color:#333;
+}
+
+/* BOTONES GENERALES */
+.btn{
+    padding:8px 12px;
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+    color:white;
+    font-size:12px;
+    font-weight:bold;
+    position:relative;
+    overflow:hidden;
+}
+
+/* VER */
+.btn-view{
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+}
+
+/* EDITAR */
+.btn-edit{
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+}
+
+/* ELIMINAR */
+.btn-delete{
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+}
+
+/* BARRIDO LED PARA BOTONES */
+.btn::before,
+.back-btn::before{
+    content:'';
+    position:absolute;
+    width:60px;
+    height:200%;
+    background:rgba(255,255,255,0.30);
+    top:-50%;
+    left:-120px;
+    transform:rotate(25deg);
+    transition:0.8s;
+}
+
+.btn:hover::before,
+.back-btn:hover::before{
+    left:120%;
+}
+
+/* HOVER GENERAL */
+.btn:hover,
+.back-btn:hover{
+    transform:translateY(-2px);
+}
+
+/* EMPTY */
+.empty{
+    text-align:center;
+    padding:30px;
+    color:#64748b;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <button class="back-btn" onclick="volverAlPanel()">
+        Volver
+    </button>
+
+    <div class="title">
+        <h1>Historial de Solicitudes</h1>
+    </div>
+
+    <div id="tabla"></div>
+
+</div>
+
+<script>
+
+function volverAlPanel(){
+
+    let rol = localStorage.getItem("rol");
+
+    if(rol === "admin"){
+        window.location.href = "./PanelAdministrador.html";
+    } else {
+        window.location.href = "./PanelUsuario.html";
+    }
+}
+
+function cargar(){
+
+    let data = JSON.parse(localStorage.getItem("solicitudes")) || [];
+    let cont = document.getElementById("tabla");
+
+    if(data.length === 0){
+        cont.innerHTML = `<div class="empty">No hay solicitudes registradas</div>`;
+        return;
+    }
+
+    let html = `
+    <table>
+        <tr>
+            <th>Responsable</th>
+            <th>Entrega</th>
+            <th>Área</th>
+            <th>Tipo</th>
+            <th>Equipos</th>
+            <th>Fecha</th>
+            <th>Acción</th>
+        </tr>
+    `;
+
+    data.forEach((s,i)=>{
+
+        let equipos = [];
+        for(let k in s.equipos){
+            if(s.equipos[k]) equipos.push(k);
+        }
+
+        html += `
+        <tr>
+            <td>${s.responsable}</td>
+            <td>${s.entrega}</td>
+            <td>${s.area}</td>
+            <td>${s.tipoSolicitud}</td>
+            <td>${equipos.join(", ")}</td>
+            <td>${s.fecha}</td>
+            <td>
+                <button class="btn btn-view" onclick="verSolicitud(${i})">Ver</button>
+                <button class="btn btn-edit" onclick="editarSolicitud(${i})">Editar</button>
+                <button class="btn btn-delete" onclick="eliminar(${i})">Eliminar</button>
+            </td>
+        </tr>
+        `;
+    });
+
+    html += `</table>`;
+    cont.innerHTML = html;
+}
+
+function eliminar(i){
+    let data = JSON.parse(localStorage.getItem("solicitudes")) || [];
+    data.splice(i,1);
+    localStorage.setItem("solicitudes", JSON.stringify(data));
+    cargar();
+}
+
+function verSolicitud(index){
+
+    let solicitudes = JSON.parse(localStorage.getItem("solicitudes")) || [];
+    let s = solicitudes[index];
+
+    let equipos = [];
+    for(let equipo in s.equipos){
+        if(s.equipos[equipo]) equipos.push(equipo);
+    }
+
+    alert(
+`Responsable: ${s.responsable}
+
+Entrega: ${s.entrega}
+
+Área: ${s.area}
+
+Tipo: ${s.tipoSolicitud}
+
+Equipos:
+${equipos.join(", ")}
+
+Otros:
+${s.otrosEquipos}
+
+Fecha:
+${s.fecha}`
+    );
+}
+
+function editarSolicitud(index){
+    localStorage.setItem("solicitudEditar", index);
+    window.location.href = "./SolicitudEquipos.html";
+}
+
+cargar();
+
+</script>
+
+</body>
+</html>

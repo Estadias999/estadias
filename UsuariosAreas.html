@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Solicitudes de Mi Área</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#e9e9ff;
+    padding:20px;
+}
+
+/* CONTENEDOR */
+.container{
+    width:900px;
+    max-height:90vh;
+    background:white;
+    border-radius:25px;
+    box-shadow:0 25px 60px rgba(0,0,0,.15);
+    overflow:hidden;
+}
+
+/* CONTENIDO */
+.content{
+    padding:40px;
+    overflow-y:scroll;
+    max-height:90vh;
+}
+
+/* Barra de desplazamiento */
+.content::-webkit-scrollbar{
+    width:10px;
+}
+
+.content::-webkit-scrollbar-track{
+    background:#e5e7eb;
+    border-radius:10px;
+}
+
+.content::-webkit-scrollbar-thumb{
+    background:linear-gradient(135deg,#5b5fc7,#8b7bff);
+    border-radius:10px;
+}
+
+.content::-webkit-scrollbar-thumb:hover{
+    background:linear-gradient(135deg,#4c51bf,#7c6cff);
+}
+
+.content h1{
+    font-size:30px;
+    color:#1e293b;
+    margin-bottom:10px;
+}
+
+.content p{
+    color:#64748b;
+    margin-bottom:25px;
+}
+
+/* TARJETAS */
+.card{
+    background:#f8f9ff;
+    border-left:5px solid #6c63ff;
+    padding:18px;
+    margin-bottom:15px;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.05);
+}
+
+.card h3{
+    color:#1e293b;
+    margin-bottom:8px;
+}
+
+.card span{
+    color:#64748b;
+    font-size:14px;
+}
+
+/* ACCIONES */
+.acciones{
+    margin-top:15px;
+    text-align:right;
+}
+
+/* BOTÓN PRINCIPAL (LED EFFECT) */
+.btn{
+    padding:12px 22px;
+    border:none;
+    border-radius:25px;
+    background:linear-gradient(135deg,#5b5fc7,#8b7bff);
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+    transition:.3s;
+    box-shadow:0 10px 20px rgba(91,95,199,.25);
+}
+
+.btn::before{
+    content:'';
+    position:absolute;
+    width:60px;
+    height:200%;
+    background:rgba(255,255,255,.3);
+    top:-50%;
+    left:-120px;
+    transform:rotate(25deg);
+    transition:.8s;
+}
+
+.btn:hover::before{
+    left:120%;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 15px 30px rgba(91,95,199,.35);
+}
+
+.btn:active{
+    transform:scale(0.98);
+}
+
+/* BOTÓN REGRESAR */
+.btn-regresar{
+    width:100%;
+    margin-top:20px;
+    padding:15px;
+    border:none;
+    border-radius:25px;
+    background:linear-gradient(135deg,#5b5fc7,#8b7bff);
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.btn-regresar:hover{
+    transform:translateY(-2px);
+}
+
+/* FOOTER */
+.footer{
+    text-align:center;
+    margin-top:20px;
+    color:#777;
+    font-size:12px;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+    .container{
+        width:100%;
+        border-radius:15px;
+    }
+
+    .content{
+        padding:25px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="content">
+
+        <h1>Solicitudes de Mi Área</h1>
+
+        <p>Solicitudes registradas por los usuarios del área.</p>
+
+        <div class="card">
+            <h3>Juan Pérez</h3>
+            <span>Solicitud de Laptop Dell Latitude 5440</span>
+
+            <div class="acciones">
+                <button class="btn"
+                onclick="alert('Mostrando solicitud de Juan Pérez')">
+                    Ver Solicitud
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>María González</h3>
+            <span>Solicitud de Monitor HP 24 pulgadas</span>
+
+            <div class="acciones">
+                <button class="btn"
+                onclick="alert('Mostrando solicitud de María González')">
+                    Ver Solicitud
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Carlos Hernández</h3>
+            <span>Solicitud de Mouse Logitech Inalámbrico</span>
+
+            <div class="acciones">
+                <button class="btn"
+                onclick="alert('Mostrando solicitud de Carlos Hernández')">
+                    Ver Solicitud
+                </button>
+            </div>
+        </div>
+
+        <button class="btn-regresar"
+        onclick="window.location.href='PanelUsuario.html'">
+             Regresar al Inicio
+        </button>
+
+        <div class="footer">
+            Sistemas y Soporte Técnico®
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

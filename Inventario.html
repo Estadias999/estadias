@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventario de Equipo</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+  background:#f3f4f6;
+  padding:30px;
+}
+
+.container{
+  max-width:1200px;
+  margin:auto;
+  background:white;
+  border-radius:12px;
+  padding:30px;
+  box-shadow:0 4px 12px rgba(0,0,0,.1);
+}
+
+h1{
+  text-align:center;
+  margin-bottom:30px;
+  color:#111827;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:16px;
+}
+
+/* TARJETAS */
+
+.card{
+  border-radius:10px;
+  padding:18px;
+  display:flex;
+  align-items:center;
+  gap:15px;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+.icon{
+  width:50px;
+  height:50px;
+  border-radius:10px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:22px;
+}
+
+.info{
+  flex:1;
+}
+
+.info h3{
+  margin-bottom:5px;
+  color:#111827;
+}
+
+.count{
+  font-weight:bold;
+  font-size:14px;
+}
+
+/* MODAL */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  z-index:999;
+}
+
+.modal-content{
+  width:100%;
+  max-width:850px;
+  background:white;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.modal-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px;
+  border-bottom:1px solid #e5e7eb;
+}
+
+.modal-header h2{
+  color:#111827;
+}
+
+.close{
+  background:none;
+  border:none;
+  font-size:24px;
+  cursor:pointer;
+  color:#6b7280;
+}
+
+.modal-body{
+  padding:20px;
+  max-height:80vh;
+  overflow:auto;
+}
+
+.item{
+  background:#f9fafb;
+  border:1px solid #e5e7eb;
+  border-radius:10px;
+  padding:15px;
+  margin-bottom:15px;
+}
+
+.item p{
+  margin:5px 0;
+  color:#374151;
+}
+
+.delete-btn{
+  margin-top:10px;
+  background:#dc2626;
+  color:white;
+  border:none;
+  padding:10px 14px;
+  border-radius:6px;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.delete-btn:hover{
+  background:#b91c1c;
+}
+
+.form{
+  margin-top:20px;
+  border-top:1px solid #e5e7eb;
+  padding-top:20px;
+}
+
+.form h3{
+  margin-bottom:15px;
+  color:#111827;
+}
+
+input{
+  width:100%;
+  padding:12px;
+  margin-bottom:12px;
+  border:1px solid #d1d5db;
+  border-radius:8px;
+  outline:none;
+  transition:.3s;
+}
+
+input:focus{
+  border-color:#2563eb;
+  box-shadow:0 0 0 3px rgba(37,99,235,.2);
+}
+
+.save-btn{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:#2563eb;
+  color:white;
+  cursor:pointer;
+  font-size:16px;
+  transition:.3s;
+}
+
+.save-btn:hover{
+  background:#1d4ed8;
+}
+
+.empty{
+  text-align:center;
+  color:#6b7280;
+  padding:20px;
+}
+
+.back-btn{
+    padding:10px 14px;
+    border:none;
+    border-radius:25px;
+    cursor:pointer;
+    color:white;
+    background:linear-gradient(135deg,#5b5fc7,#8b7bff);
+    font-weight:bold;
+    overflow:hidden;
+    position:relative;
+    margin-bottom:20px;
+    display:inline-block;
+}
+
+.btn::before,
+.back-btn::before{
+    content:'';
+    position:absolute;
+    width:60px;
+    height:200%;
+    background:rgba(255,255,255,0.30);
+    top:-50%;
+    left:-120px;
+    transform:rotate(25deg);
+    transition:0.8s;
+}
+
+.btn:hover::before,
+.back-btn:hover::before{
+    left:120%;
+}
+
+.btn{
+    padding:8px 12px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    color:white;
+}
+
+
+.btn{
+    width:100%;
+    padding:14px;
+    background:#1e293b;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:15px;
+    margin-top:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+  
+
+<div class="container">
+
+  <button class="back-btn" onclick="volverAlPanel()">
+        Volver
+    </button>
+
+  <h1>Inventario de Equipo</h1>
+
+  <div class="grid" id="grid"></div>
+
+</div>
+
+
+
+<!-- MODAL -->
+
+<div class="modal" id="modal">
+
+  <div class="modal-content">
+
+    
+
+    <div class="modal-header">
+
+      <h2 id="modalTitle"></h2>
+
+      <button class="close" onclick="closeModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div id="itemsContainer"></div>
+
+      <div class="form">
+
+        <h3>Agregar Registro</h3>
+
+        <div id="dynamicForm"></div>
+
+        <button class="save-btn" onclick="saveItem()">
+          Guardar Registro
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+  function volverAlPanel(){
+
+    let rol = localStorage.getItem("rol");
+
+    if(rol === "admin"){
+        window.location.href = "./PanelAdministrador.html";
+    }
+    else{
+        window.location.href = "./PanelUsuario.html";
+    }
+}
+
+
+const inventory = [
+
+{
+  id:1,
+  name:'Computadoras',
+  icon:'fa-laptop',
+  fields:[
+    'folio',
+    'modelo',
+    'numeroSerie',
+    'hostname',
+    'direccionFisica'
+  ],
+  records:[]
+},
+
+{
+  id:2,
+  name:'Celulares',
+  icon:'fa-mobile-screen',
+  fields:[
+    'folio',
+    'modelo',
+    'numeroSerie',
+    'lineaTelefonica'
+  ],
+  records:[]
+},
+
+{
+  id:3,
+  name:'Cargadores',
+  icon:'fa-plug',
+  fields:[
+    'folio',
+    'modelo',
+    'numeroSerie'
+  ],
+  records:[]
+},
+
+{
+  id:4,
+  name:'Monitores',
+  icon:'fa-desktop',
+  fields:[
+    'folio',
+    'modelo',
+    'numeroSerie'
+  ],
+  records:[]
+},
+
+{
+  id:5,
+  name:'Teclados',
+  icon:'fa-keyboard',
+  fields:[
+    'folio',
+    'modelo',
+    'numeroSerie'
+  ],
+  records:[]
+},
+
+{
+  id:6,
+  name:'Mouse',
+  icon:'fa-computer-mouse',
+  fields:[
+    'folio',
+    'modelo',
+    'numeroSerie'
+  ],
+  records:[]
+},
+
+{
+  id:7,
+  name:'USB',
+  icon:'fa-usb',
+  fields:[
+    'folio',
+    'modelo',
+    'numeroSerie'
+  ],
+  records:[]
+},
+
+{
+  id:8,
+  name:'Audífonos',
+  icon:'fa-headphones',
+  fields:[
+    'folio',
+    'modelo',
+    'numeroSerie'
+  ],
+  records:[]
+},
+
+{
+  id:9,
+  name:'Otros',
+  icon:'fa-circle-question',
+  fields:[
+    'folio',
+    'modelo',
+    'numeroSerie'
+  ],
+  records:[]
+}
+
+];
+
+let selected = null;
+
+const grid = document.getElementById('grid');
+
+function renderCards(){
+
+  grid.innerHTML='';
+
+  inventory.forEach(item=>{
+
+    const hasRecords = item.records.length > 0;
+
+    const card = document.createElement('div');
+
+    card.className='card';
+
+    /* CAMBIO DINÁMICO DE COLOR */
+
+    if(hasRecords){
+
+      card.style.background='#ffffff';
+      card.style.border='2px solid #93c5fd';
+
+    }else{
+
+      card.style.background='#fff5f5';
+      card.style.border='2px solid #fecaca';
+
+    }
+
+    card.innerHTML=`
+
+      <div class="icon"
+        style="
+          background:${hasRecords ? '#dbeafe' : '#fee2e2'};
+          color:${hasRecords ? '#2563eb' : '#dc2626'};
+        "
+      >
+        <i class="fa-solid ${item.icon}"></i>
+      </div>
+
+      <div class="info">
+
+        <h3>${item.name}</h3>
+
+        <p class="count"
+          style="
+            color:${hasRecords ? '#2563eb' : '#dc2626'};
+          "
+        >
+          Cantidad: ${item.records.length}
+        </p>
+
+      </div>
+
+    `;
+
+    card.onclick = ()=> openModal(item.id);
+
+    grid.appendChild(card);
+
+  });
+
+}
+
+function openModal(id){
+
+  selected = inventory.find(x=>x.id===id);
+
+  document.getElementById('modal').style.display='flex';
+
+  document.getElementById('modalTitle').innerText =
+    selected.name;
+
+  renderRecords();
+
+  renderForm();
+
+}
+
+function closeModal(){
+
+  document.getElementById('modal').style.display='none';
+
+}
+
+function renderRecords(){
+
+  const container =
+    document.getElementById('itemsContainer');
+
+  if(selected.records.length===0){
+
+    container.innerHTML=`
+      <p class="empty">
+        No hay registros todavía
+      </p>
+    `;
+
+    return;
+
+  }
+
+  container.innerHTML='';
+
+  selected.records.forEach(record=>{
+
+    const div=document.createElement('div');
+
+    div.className='item';
+
+    let html='';
+
+    Object.keys(record).forEach(key=>{
+
+      if(key !== 'id'){
+
+        html += `
+          <p>
+            <strong>${formatLabel(key)}:</strong>
+            ${record[key]}
+          </p>
+        `;
+
+      }
+      
+    });
+
+    html += `
+      <button
+        class="delete-btn"
+        onclick="deleteRecord('${record.id}')"
+      >
+        <i class="fa-solid fa-trash"></i>
+        Eliminar
+      </button>
+    `;
+
+    div.innerHTML = html;
+
+    container.appendChild(div);
+
+  });
+
+}
+
+function renderForm(){
+
+  const form =
+    document.getElementById('dynamicForm');
+
+  form.innerHTML='';
+
+  selected.fields.forEach(field=>{
+
+    form.innerHTML += `
+
+      <input
+        type="text"
+        id="${field}"
+        placeholder="${formatLabel(field)}"
+      />
+
+    `;
+
+  });
+
+}
+
+function saveItem(){
+
+  let record = {
+    id: Date.now()
+  };
+
+  let valid = true;
+
+  selected.fields.forEach(field=>{
+
+    const value =
+      document.getElementById(field).value.trim();
+
+    if(!value){
+      valid = false;
+    }
+
+    record[field] = value;
+
+  });
+
+  if(!valid){
+
+    alert('Completa todos los campos');
+
+    return;
+
+  }
+
+  /* BUSCAR EL ITEM ORIGINAL */
+  const itemIndex =
+    inventory.findIndex(x => x.id === selected.id);
+
+  /* AGREGAR AL ARRAY ORIGINAL */
+  inventory[itemIndex].records.push(record);
+
+  /* ACTUALIZAR selected */
+  selected = inventory[itemIndex];
+
+  renderRecords();
+
+  renderCards();
+
+  renderForm();
+
+}
+
+function deleteRecord(id){
+
+  const itemIndex =
+    inventory.findIndex(x => x.id === selected.id);
+
+  inventory[itemIndex].records =
+    inventory[itemIndex].records.filter(x=>x.id != id);
+
+  selected = inventory[itemIndex];
+
+  renderRecords();
+
+  renderCards();
+
+}
+
+function formatLabel(text){
+
+  return text
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, str => str.toUpperCase());
+
+}
+
+renderCards();
+
+</script>
+
+</body>
+</html>

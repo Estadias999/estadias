@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Inventario de Mi Área</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, sans-serif;
+}
+
+body{
+    background: linear-gradient(135deg, #e9e9ff, #f5f7ff);
+    padding:40px;
+}
+
+/* CONTENEDOR */
+.container{
+    max-width:1000px;
+    margin:auto;
+    background:#fff;
+    padding:40px;
+    border-radius:25px;
+    box-shadow:0 25px 60px rgba(0,0,0,0.15);
+    position:relative;
+}
+
+/* BOTÓN VOLVER */
+.back-btn{
+    position:absolute;
+    top:20px;
+    left:20px;
+    padding:10px 14px;
+    border:none;
+    border-radius:25px;
+    cursor:pointer;
+    color:white;
+    background: linear-gradient(135deg, #5b5fc7, #8b7bff);
+    font-weight:bold;
+    overflow:hidden;
+}
+
+/* EFECTO LED */
+.back-btn::before{
+    content:'';
+    position:absolute;
+    width:60px;
+    height:200%;
+    background:rgba(255,255,255,0.30);
+    top:-50%;
+    left:-120px;
+    transform:rotate(25deg);
+    transition:0.8s;
+}
+
+.back-btn:hover::before{
+    left:120%;
+}
+
+.back-btn:hover{
+    transform:translateY(-2px);
+}
+
+/* TÍTULO */
+.title{
+    text-align:center;
+    margin-bottom:10px;
+}
+
+.title h1{
+    color:#1e1e2f;
+}
+
+.subtitle{
+    text-align:center;
+    color:#64748b;
+    margin-bottom:30px;
+}
+
+/* ITEMS INVENTARIO */
+.item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 20px;
+    margin-bottom:12px;
+    border-radius:15px;
+    background:#f8fafc;
+    border:1px solid #eef2f7;
+    transition:0.3s;
+}
+
+.item:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.item strong{
+    color:#1e293b;
+}
+
+.item span{
+    font-weight:bold;
+}
+
+/* ESTADOS */
+.disponible{
+    color:#16a34a;
+}
+
+.enuso{
+    color:#f59e0b;
+}
+
+.mantenimiento{
+    color:#dc2626;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <button class="back-btn" onclick="window.location.href='PanelUsuario.html'">
+        Volver
+    </button>
+
+    <div class="title">
+        <h1>Inventario de Mi Área</h1>
+    </div>
+
+    <div class="subtitle">
+        Equipos y materiales disponibles
+    </div>
+
+    <div class="item">
+        <strong>Laptop Dell Latitude 5440</strong>
+        <span class="disponible">Disponible</span>
+    </div>
+
+    <div class="item">
+        <strong>Laptop HP ProBook 450</strong>
+        <span class="enuso">En uso</span>
+    </div>
+
+    <div class="item">
+        <strong>Gabinete Dell OptiPlex</strong>
+        <span class="disponible">Disponible</span>
+    </div>
+
+    <div class="item">
+        <strong>Gabinete HP EliteDesk</strong>
+        <span class="enuso">En uso</span>
+    </div>
+
+    <div class="item">
+        <strong>Monitor HP 24"</strong>
+        <span class="disponible">Disponible</span>
+    </div>
+
+    <div class="item">
+        <strong>Monitor Samsung 27"</strong>
+        <span class="enuso">En uso</span>
+    </div>
+
+    <div class="item">
+        <strong>Mouse Logitech M185</strong>
+        <span class="disponible">Disponible</span>
+    </div>
+
+    <div class="item">
+        <strong>Mouse Dell MS116</strong>
+        <span class="disponible">Disponible</span>
+    </div>
+
+    <div class="item">
+        <strong>Teclado Logitech K120</strong>
+        <span class="enuso">En uso</span>
+    </div>
+
+    <div class="item">
+        <strong>Teclado HP USB</strong>
+        <span class="disponible">Disponible</span>
+    </div>
+
+    <div class="item">
+        <strong>Impresora Epson L3250</strong>
+        <span class="disponible">Disponible</span>
+    </div>
+
+    <div class="item">
+        <strong>Impresora HP LaserJet Pro</strong>
+        <span class="mantenimiento">Mantenimiento</span>
+    </div>
+
+    <div class="item">
+        <strong>Webcam Logitech C920</strong>
+        <span class="disponible">Disponible</span>
+    </div>
+
+    <div class="item">
+        <strong>Audífonos USB Logitech</strong>
+        <span class="enuso">En uso</span>
+    </div>
+
+    <div class="item">
+        <strong>Disco SSD Kingston 1TB</strong>
+        <span class="disponible">Disponible</span>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Panel Principal</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#e9e9ff;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.container{
+    width:1000px;
+    height:600px;
+    display:flex;
+    border-radius:25px;
+    overflow:hidden;
+    background:white;
+    box-shadow:0 25px 60px rgba(0,0,0,0.15);
+}
+
+/* PANEL IZQUIERDO */
+.left{
+    width:40%;
+    background:linear-gradient(135deg,#5b5fc7,#8b7bff);
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:40px;
+    color:white;
+}
+
+.left::before,
+.left::after{
+    content:"";
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,0.15);
+}
+
+.left::before{
+    width:300px;
+    height:300px;
+    top:-80px;
+    left:-80px;
+}
+
+.left::after{
+    width:400px;
+    height:400px;
+    bottom:-150px;
+    right:-150px;
+}
+
+.logo{
+    font-size:18px;
+    font-weight:bold;
+    z-index:2;
+}
+
+.info{
+    z-index:2;
+}
+
+.info h2{
+    font-size:34px;
+    margin-bottom:12px;
+}
+
+.info p{
+    font-size:14px;
+    line-height:1.8;
+    opacity:0.9;
+}
+
+/* PANEL DERECHO */
+.right{
+    width:60%;
+    padding:60px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.right h1{
+    font-size:32px;
+    color:#1e293b;
+    margin-bottom:10px;
+}
+
+.right p{
+    color:#64748b;
+    margin-bottom:30px;
+    font-size:15px;
+}
+
+/* CONTENEDOR BOTONES */
+.menu{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+/* BOTONES */
+.btn{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:25px;
+    background:linear-gradient(135deg,#5b5fc7,#8b7bff);
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+    transition:0.3s;
+    box-shadow:0 10px 20px rgba(91,95,199,0.25);
+}
+
+/* EFECTO LED */
+.btn::before{
+    content:'';
+    position:absolute;
+    width:60px;
+    height:200%;
+    background:rgba(255,255,255,0.30);
+    top:-50%;
+    left:-120px;
+    transform:rotate(25deg);
+    transition:0.8s;
+}
+
+.btn:hover::before{
+    left:120%;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 15px 30px rgba(91,95,199,0.35);
+}
+
+.btn:active{
+    transform:scale(0.98);
+}
+
+/* BOTÓN CERRAR SESIÓN */
+.logout{
+    background:linear-gradient(135deg,#ef4444,#dc2626);
+}
+
+.logout:hover{
+    box-shadow:0 15px 30px rgba(220,38,38,0.35);
+}
+
+/* FOOTER */
+.footer{
+    margin-top:25px;
+    text-align:center;
+    font-size:12px;
+    color:#777;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+
+    .container{
+        width:95%;
+        height:auto;
+        flex-direction:column;
+    }
+
+    .left,
+    .right{
+        width:100%;
+    }
+
+    .left{
+        min-height:220px;
+    }
+
+    .right{
+        padding:40px 25px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- PANEL IZQUIERDO -->
+    <div class="left">
+
+        <div class="logo">
+            Sistema de Inventario
+        </div>
+
+        <div class="info">
+            <h2>Panel Principal</h2>
+
+            <p>
+                Administra inventario, solicitudes y seguimiento
+                de equipos desde una sola plataforma.
+                Accede rápidamente a cada módulo mediante
+                las opciones disponibles.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- PANEL DERECHO -->
+    <div class="right">
+
+        <h1>Bienvenido de nuevo</h1>
+
+        <p>
+            Selecciona la opción que deseas utilizar.
+        </p>
+
+        <div class="menu">
+
+            <button class="btn" onclick="irInventario()">
+                 Inventario
+            </button>
+
+
+            <button class="btn" onclick="irHistorialSolicitudes()">
+                 Solicitudes
+            </button>
+
+            <button class="btn logout" onclick="irlogg()">
+                 Cerrar Sesión
+            </button>
+
+        </div>
+
+        <div class="footer">
+            Sistemas y Soporte Técnico®
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function irInventario(){
+    window.location.href = "UsariosInventaio.html";
+}
+
+
+function irHistorialSolicitudes(){
+    window.location.href = "UsuariosAreas.html";
+}
+
+function irlogg(){
+    localStorage.clear();
+    window.location.href = "Logg.html";
+}
+
+</script>
+
+</body>
+</html>

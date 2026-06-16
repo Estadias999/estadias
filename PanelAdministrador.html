@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Panel Principal</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: linear-gradient(135deg, #e9e9ff, #f5f7ff);
+}
+
+/* CARD */
+.container{
+    width: 500px;
+    background: white;
+    padding: 45px;
+    border-radius: 25px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+/* TITULO */
+h1{
+    font-size: 24px;
+    color: #1e1e2f;
+    margin-bottom: 10px;
+}
+
+/* TEXTO */
+p{
+    font-size: 14px;
+    color: #6b6b7a;
+    margin-bottom: 25px;
+}
+
+/* 🔥 BOTONES UNIFICADOS */
+button{
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(135deg, #5b5fc7, #8b7bff);
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+    box-shadow: 0 10px 20px rgba(91,95,199,0.25);
+}
+
+/* 💡 BARRIDO LED PARA TODOS */
+button::before{
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 200%;
+    background: rgba(255,255,255,0.30);
+    top: -50%;
+    left: -120px;
+    transform: rotate(25deg);
+    transition: 0.8s;
+}
+
+button:hover::before{
+    left: 120%;
+}
+
+/* hover general */
+button:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(91,95,199,0.35);
+}
+
+button:active{
+    transform: scale(0.98);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Bienvenido de nuevo</h1>
+    <p>Selecciona una opción para continuar</p>
+
+    <button onclick="irSolicitudes()">Solicitudes</button>
+    <button onclick="irSolicitud()">Solicitud</button>
+    <button onclick="irInventario()">Inventario</button>
+    <button onclick="irAAreas()">Áreas</button>
+    <button onclick="irAdminitracionUsuarios()">Administración Usuarios</button>
+    <button onclick="irlogg()">Cerrar sesión</button>
+
+</div>
+
+<script>
+
+function irSolicitudes(){
+    window.location.href = "HIstorialSolicitudes.html";
+}
+
+function irSolicitud(){
+    window.location.href = "Solicitud.html";
+}
+
+function irInventario(){
+    window.location.href = "Inventario.html";
+}
+
+function irAAreas(){
+    window.location.href = "Areas.html";
+}
+
+function irAdminitracionUsuarios(){
+    window.location.href = "AdministracionUsuarios.html";
+}
+
+function irlogg(){
+    window.location.href = "Logg.html";
+}
+
+</script>
+
+</body>
+</html>
