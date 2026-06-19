@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registros del Área</title>
+
+<style>
+
+    .btn-modern{
+    padding:10px 16px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:13px;
+    color:white;
+    background:linear-gradient(135deg,#2563eb,#4f46e5);
+    position:relative;
+    overflow:hidden;
+    transition:.3s;
+    box-shadow:0 4px 10px rgba(0,0,0,.15);
+}
+
+.btn-modern:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 15px rgba(0,0,0,.2);
+}
+
+/* efecto brillo */
+.btn-modern::before{
+    content:'';
+    position:absolute;
+    width:60px;
+    height:200%;
+    background:rgba(255,255,255,0.25);
+    top:-50%;
+    left:-120px;
+    transform:rotate(25deg);
+    transition:0.6s;
+}
+
+.btn-modern:hover::before{
+    left:120%;
+}
+
+/* botón rojo */
+.btn-danger{
+    background:linear-gradient(135deg,#dc2626,#b91c1c);
+}
+
+/* botón amarillo */
+.btn-warning{
+    background:linear-gradient(135deg,#f59e0b,#d97706);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f1f5f9;
+    padding:30px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.back{
+    text-decoration:none;
+    color:#1e293b;
+    font-weight:bold;
+}
+
+/* CARD */
+.card{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,.08);
+    transition:.2s;
+}
+
+.card:hover{
+    transform:translateY(-2px);
+}
+
+/* TITULO */
+.title{
+    font-weight:bold;
+    color:#0f172a;
+    font-size:16px;
+}
+
+/* SUB */
+.sub{
+    font-size:13px;
+    color:#64748b;
+    margin-top:4px;
+}
+
+/* BOTONES */
+.btns{
+    margin-top:10px;
+    display:flex;
+    gap:10px;
+}
+
+.btn{
+    padding:8px 12px;
+    border:none;
+    border-radius:6px;
+    color:white;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.view{
+    background:#2563eb;
+}
+
+.no-data{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    text-align:center;
+    color:#64748b;
+    box-shadow:0 4px 10px rgba(0,0,0,.08);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <button class="btn-modern" onclick="volver()">
+     Volver
+</button>
+        <h2 id="titulo">Registros</h2>
+    </div>
+
+    <div id="lista"></div>
+
+</div>
+
+<!-- SWEETALERT2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+    function volver(){
+    window.location.href = "Areas.html";
+}
+
+const params = new URLSearchParams(window.location.search);
+const area = params.get("area");
+
+document.getElementById("titulo").textContent =
+"Registros - " + area;
+
+let solicitudes =
+JSON.parse(localStorage.getItem("solicitudes")) || [];
+
+let filtradas =
+solicitudes.filter(s => s.area === area);
+
+let lista = document.getElementById("lista");
+
+function render(){
+
+    lista.innerHTML = "";
+
+    if(filtradas.length === 0){
+
+        lista.innerHTML = `
+            <div class="no-data">
+                No hay registros en esta área
+            </div>
+        `;
+        return;
+    }
+
+    
+    filtradas.forEach((s,i)=>{
+
+        lista.innerHTML += `
+        <div class="card">
+
+            <div class="title">
+                ${s.tipo}
+            </div>
+
+            <div class="sub">
+                Responsable: ${s.responsable}
+            </div>
+
+            <div class="sub">
+                Entrega: ${s.entrega}
+            </div>
+
+            <div class="btns">
+
+                <button
+                    class="btn view"
+                    onclick="ver(${i})">
+                    VER DETALLE
+                </button>
+
+            </div>
+
+        </div>
+        `;
+    });
+}
+
+function ver(i){
+
+    let s = filtradas[i];
+
+    let html = '<div style="text-align:left">';
+
+    Object.keys(s).forEach(key => {
+
+        let valor = s[key];
+
+        if(typeof valor === "object"){
+
+            let activos = [];
+
+            for(let k in valor){
+                if(valor[k]) activos.push(k);
+            }
+
+            valor = activos.join(", ");
+        }
+
+        html += `
+            <p>
+                <b>${key}:</b> ${valor || '-'}
+            </p>
+            <hr>
+        `;
+    });
+
+    html += '</div>';
+
+    Swal.fire({
+        title:'Detalle Completo',
+        width:'700px',
+        html: html,
+        confirmButtonColor:'#2563eb'
+    });
+
+}
+
+render();
+
+</script>
+
+</body>
+</html>
+

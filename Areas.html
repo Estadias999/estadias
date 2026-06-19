@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestión de Áreas</title>
+
+<style>
+    .btn-modern{
+    padding:10px 16px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:13px;
+    color:white;
+    background:linear-gradient(135deg,#2563eb,#4f46e5);
+    position:relative;
+    overflow:hidden;
+    transition:.3s;
+    box-shadow:0 4px 10px rgba(0,0,0,.15);
+}
+
+.btn-modern:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 15px rgba(0,0,0,.2);
+}
+
+/* efecto brillo */
+.btn-modern::before{
+    content:'';
+    position:absolute;
+    width:60px;
+    height:200%;
+    background:rgba(255,255,255,0.25);
+    top:-50%;
+    left:-120px;
+    transform:rotate(25deg);
+    transition:0.6s;
+}
+
+.btn-modern:hover::before{
+    left:120%;
+}
+
+/* botón rojo */
+.btn-danger{
+    background:linear-gradient(135deg,#dc2626,#b91c1c);
+}
+
+/* botón amarillo */
+.btn-warning{
+    background:linear-gradient(135deg,#f59e0b,#d97706);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f1f5f9;
+    padding:30px;
+}
+
+/* CONTENEDOR */
+.container{
+    max-width:1100px;
+    margin:auto;
+}
+
+/* HEADER */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.header h1{
+    color:#0f172a;
+}
+
+/* BUSCADOR */
+.search{
+    padding:10px;
+    width:250px;
+    border:1px solid #cbd5e1;
+    border-radius:8px;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
+    gap:20px;
+}
+
+/* CARD */
+.card{
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+    transition:.2s;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+}
+
+/* TITULO */
+.area-name{
+    font-size:18px;
+    font-weight:bold;
+    color:#1e293b;
+}
+
+/* SUBTEXTO */
+.subtitle{
+    font-size:13px;
+    color:#64748b;
+    margin-top:5px;
+}
+
+/* BOTONES */
+.actions{
+    display:flex;
+    gap:8px;
+    margin-top:15px;
+}
+
+.btn{
+    flex:1;
+    padding:8px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:12px;
+    color:white;
+}
+
+.view{ background:#2563eb; }
+.edit{ background:#f59e0b; }
+.delete{ background:#dc2626; }
+
+/* AGREGAR */
+.add-area{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.add-area input{
+    flex:1;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #cbd5e1;
+}
+
+.add-area button{
+    padding:10px 15px;
+    background:#0f172a;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+    <button class="btn-modern" onclick="volver()">
+     Volver
+</button>
+
+<div class="container">
+
+    <div class="header">
+        <h1>Gestión de Áreas</h1>
+
+        <input
+            type="text"
+            class="search"
+            id="buscar"
+            placeholder="Buscar área..."
+        >
+    </div>
+
+    <!-- AGREGAR -->
+    <div class="add-area">
+        <input type="text" id="nuevaArea" placeholder="Nueva área...">
+        <button onclick="agregarArea()">Agregar</button>
+    </div>
+
+    <!-- GRID -->
+    <div class="grid" id="gridAreas"></div>
+
+</div>
+
+<script>
+    function volver(){
+    window.location.href = "PanelAdministrador.html";
+}
+
+let areas = JSON.parse(localStorage.getItem("areas")) || [];
+
+function guardar(){
+    localStorage.setItem("areas", JSON.stringify(areas));
+}
+
+function render(){
+
+    let grid = document.getElementById("gridAreas");
+    grid.innerHTML = "";
+
+    areas.forEach((a,i)=>{
+
+        grid.innerHTML += `
+        <div class="card">
+
+            <div class="area-name">${a}</div>
+            <div class="subtitle">Área del sistema</div>
+
+            <div class="actions">
+
+    <button class="btn-modern" onclick="ver('${a}')">
+        Ver
+    </button>
+
+    <button class="btn-modern btn-warning" onclick="editar(${i})">
+        Editar
+    </button>
+
+    <button class="btn-modern btn-danger" onclick="eliminar(${i})">
+        Eliminar
+    </button>
+
+</div>
+
+        </div>
+        `;
+    });
+
+    guardar();
+}
+
+function agregarArea(){
+
+    let input = document.getElementById("nuevaArea");
+
+    if(input.value.trim() === ""){
+
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campo vacío',
+            text: 'Escribe un área'
+        });
+
+        return;
+    }
+
+    areas.push(input.value.trim());
+
+    input.value = "";
+
+    render();
+
+    Swal.fire({
+        icon: 'success',
+        title: 'Área agregada',
+        timer: 1500,
+        showConfirmButton: false
+    });
+
+}
+
+function editar(i){
+
+    Swal.fire({
+        title: 'Editar área',
+        input: 'text',
+        inputValue: areas[i],
+        inputPlaceholder: 'Nombre del área',
+        showCancelButton: true,
+        confirmButtonText: 'Guardar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#f59e0b',
+        inputValidator: (value) => {
+            if (!value.trim()) {
+                return 'Debes escribir un nombre';
+            }
+        }
+    }).then((result) => {
+
+        if(result.isConfirmed){
+
+            areas[i] = result.value.trim();
+
+            render();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Área actualizada',
+                text: 'Los cambios fueron guardados correctamente',
+                timer: 1500,
+                showConfirmButton: false
+            });
+
+        }
+
+    });
+
+}
+
+function eliminar(i){
+
+    Swal.fire({
+        title: '¿Eliminar área?',
+        text: 'Esta acción no se puede deshacer',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+
+        if(result.isConfirmed){
+
+            areas.splice(i,1);
+
+            render();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Área eliminada',
+                text: 'El registro fue eliminado correctamente',
+                timer: 1500,
+                showConfirmButton: false
+            });
+
+        }
+
+    });
+
+}
+
+function ver(area){
+    window.location.href =
+    "AreasDetalle.html?area=" + encodeURIComponent(area);
+}
+
+/* BUSCADOR */
+document.getElementById("buscar")
+.addEventListener("input", function(){
+
+    let txt = this.value.toLowerCase();
+
+    let cards = document.querySelectorAll(".card");
+
+    cards.forEach(c=>{
+
+        let name = c.querySelector(".area-name")
+        .textContent.toLowerCase();
+
+        c.style.display =
+        name.includes(txt) ? "block" : "none";
+
+    });
+
+});
+
+render();
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>
